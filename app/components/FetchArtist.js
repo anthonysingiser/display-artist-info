@@ -12,13 +12,22 @@ function FetchArtist() {
         setSearchResults(artists.items)
     }
 
+    const handleArtistClick = async (artist) => {
+        // Get the Wikipedia page for the artist
+        const response = await fetch(`https://en.wikipedia.org/api/rest_v1/page/summary/${artist.name}`)
+        const data = await response.json()
+
+        // Display the artist's Wikipedia page summary
+        alert(data.extract)
+    }
+
     return (
         <div>
             <input type="text" value={searchTerm} onChange={e => setSearchTerm(e.target.value)} />
             <button onClick={handleSearch}>Search</button>
             <ul>
                 {searchResults.map(artist => (
-                    <li key={artist.id}>{artist.name}</li>
+                    <li key={artist.id} onClick={() => handleArtistClick(artist)}>{artist.name}</li>
                 ))}
             </ul>    
         </div>
