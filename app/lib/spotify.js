@@ -3,6 +3,8 @@ import SpotifyWebApi from 'spotify-web-api-js'
 const client_id = process.env.SPOTIFY_CLIENT_ID
 const client_secret = process.env.SPOTIFY_CLIENT_SECRET
 
+const axios = require('axios')
+
 const authOptions = {
   url: 'https://accounts.spotify.com/api/token',
   headers: {
@@ -11,21 +13,29 @@ const authOptions = {
   form: {
     grant_type: 'client_credentials'
   },
-  json: true
 };
-
-request.post(authOptions, function(error, response, body) {
-  if(!error && response.statusCode === 200) {
-    const token = body.access_token
-    console.log(token)
-  }
-})
 
 const spotifyApi = new SpotifyWebApi({
   clientId: client_id,
   clientSecret: client_secret,
-})
+});
 
-spotifyApi.setAccessToken(token)
+const getAccessToken = async () => {
+  try {
+    const response = await axios.post(authOptions.url, authOptions.form, {
+      headers: authOptions.headers
+    });
+    
+    if (response.status === 200) {
+      const token = response.data.access_token;
+      console.log(token, 'this is the token');
+      spotifyApi.setAccessToken(token);
+    }
+  } catch (error) {
+    console.log(error);
+  }
+};
 
-export default spotifyApi
+getAccessToken();
+
+export default spotifyApi;
