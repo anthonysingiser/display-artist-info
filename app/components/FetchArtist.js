@@ -1,15 +1,17 @@
 'use client'
 
-import spotifyApi from "../lib/spotify";
+import getAccessToken from "../lib/spotify";
 import { useState } from "react";
 
+const spotifyApi = getAccessToken()
+
 function FetchArtist() {
-    const [searchTerm, setSearchTerm] = useState('')
-    const [searchResults, setSearchResults] = useState([])
+    const [artistName, setArtistName] = useState('')
+    const [artistList, setArtistLists] = useState([])
 
     const handleSearch = async() => {
-        const { artists } = await spotifyApi.search(searchTerm, ['artist'])
-        setSearchResults(artists.items)
+        const { artists } = await spotifyApi.searchArtists(artistName)
+        setArtistLists(artists.items)
     }
 
     const handleArtistClick = async (artist) => {
@@ -23,10 +25,10 @@ function FetchArtist() {
 
     return (
         <div>
-            <input type="text" value={searchTerm} onChange={e => setSearchTerm(e.target.value)} />
+            <input type="text" value={artistName} onChange={e => setArtistName(e.target.value)} />
             <button onClick={handleSearch}>Search</button>
             <ul>
-                {searchResults.map(artist => (
+                {artistList.map(artist => (
                     <li key={artist.id} onClick={() => handleArtistClick(artist)}>{artist.name}</li>
                 ))}
             </ul>    

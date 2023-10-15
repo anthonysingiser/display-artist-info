@@ -14,27 +14,30 @@ const authOptions = {
   },
 };
 
-const spotifyApi = new SpotifyWebApi({
-  clientId: client_id,
-  clientSecret: client_secret,
-});
-
 const getAccessToken = async () => {
+  
+  const spotifyApi = new SpotifyWebApi({
+    clientId: client_id,
+    clientSecret: client_secret,
+  })
+
   try {
     const response = await axios.post(authOptions.url, authOptions.form, {
       headers: authOptions.headers
     });
 
     if (response.status === 200) {
-      const token = response.data.access_token;
-      console.log(token, 'this is the token');
-      spotifyApi.setAccessToken(token);
+      const token = await response.data.access_token
+      console.log(token, 'this is the token')
+      
+      spotifyApi.setAccessToken(token)
+    
+      return spotifyApi
     }
+
   } catch (error) {
-    console.log(error);
+    console.log(error)
   }
 };
 
-getAccessToken();
-
-export default spotifyApi;
+export default getAccessToken;
