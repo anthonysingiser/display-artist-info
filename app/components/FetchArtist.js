@@ -10,6 +10,7 @@ function FetchArtist() {
     const [artistList, setArtistLists] = useState([])
 
     const handleSearch = async() => {
+        console.log(spotifyApi)
         const { artists } = await spotifyApi.searchArtists(artistName)
         setArtistLists(artists.items)
     }
