@@ -1,9 +1,5 @@
 'use client'
-
-import getAccessToken from "../lib/spotify";
 import { useState } from "react";
-
-const spotifyApi = getAccessToken()
 
 function FetchArtist() {
     const [artistName, setArtistName] = useState('')
