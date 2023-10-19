@@ -1,13 +1,20 @@
-'use client'
+import React from "react";
+import { useSession, signIn, signOut } from "next-auth/react"
 
-import FetchArtist from "./components/FetchArtist"
+export default function Page() {
+  const session = useSession()
 
-export default function Home() {
   return (
-    <div>
-      <h1>Home</h1>
-      <p>This is the home page</p>
-      <FetchArtist />
-    </div>
+    <>
+      {!!session?.data ? 
+        <span onClick = {
+          () => signIn('spotify')
+          }> Sign in with Spotify </span>
+      : 
+        <span onClick = {
+          () => signOut() 
+          }> Sign out </span>
+      }
+    </>
   )
 }
