@@ -1,13 +1,13 @@
-import AuthProvider from '@/components/AuthProvider'
+import AuthContext from '@/components/AuthProvider'
 
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
-      <AuthProvider>
+      <AuthContext>
         <main>
           <body>{children}</body>
         </main>
-      </AuthProvider>
+      </AuthContext>
     </html>
   )
 }

@@ -10,4 +10,4 @@ function AuthContext({ children }) {
     )
 }
 
-module.exports = AuthContext;
+export default AuthContext
