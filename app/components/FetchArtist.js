@@ -1,36 +1,38 @@
-// 'use client'
-// import { useState } from "react";
+import spotifyApi from "../lib/spotify";
+import { useState } from "react";
 
-// function FetchArtist() {
-//     const [artistName, setArtistName] = useState('')
-//     const [artistList, setArtistLists] = useState([])
+function FetchArtist() {
+    const [searchTerm, setSearchTerm] = useState('')
+    const [searchResults, setSearchResults] = useState([])
+    const [albums, setAlbums] = useState([])
 
-//     const handleSearch = async() => {
-//         console.log(spotifyApi)
-//         const { artists } = await spotifyApi.searchArtists(artistName)
-//         setArtistLists(artists.items)
-//     }
+    const handleSearch = async() => {
+        const { artists } = await spotifyApi.search(searchTerm, ['artist'])
+        setSearchResults(artists.items)
+    }
 
-//     const handleArtistClick = async (artist) => {
-//         // Get the Wikipedia page for the artist
-//         const response = await fetch(`https://en.wikipedia.org/api/rest_v1/page/summary/${artist.name}`)
-//         const data = await response.json()
+    const handleArtistClick = async (artist) => {
+        // Get the artist's albums
+        const response = await spotifyApi.getArtistAlbums(artist.id)
+        setAlbums(response.items)
+    }
 
-//         // Display the artist's Wikipedia page summary
-//         alert(data.extract)
-//     }
+    return (
+        <div>
+            <input type="text" value={searchTerm} onChange={e => setSearchTerm(e.target.value)} />
+            <button onClick={handleSearch}>Search</button>
+            <ul>
+                {searchResults.map(artist => (
+                    <li key={artist.id} onClick={() => handleArtistClick(artist)}>{artist.name}</li>
+                ))}
+            </ul>
+            <ul>
+                {albums.map(album => (
+                    <li key={album.id}>{album.name}</li>
+                ))}
+            </ul>
+        </div>
+    )
+}
 
-//     return (
-//         <div>
-//             <input type="text" value={artistName} onChange={e => setArtistName(e.target.value)} />
-//             <button onClick={handleSearch}>Search</button>
-//             <ul>
-//                 {artistList.map(artist => (
-//                     <li key={artist.id} onClick={() => handleArtistClick(artist)}>{artist.name}</li>
-//                 ))}
-//             </ul>    
-//         </div>
-//     )
-// }
-
-// export default FetchArtist;
+export default FetchArtist;
