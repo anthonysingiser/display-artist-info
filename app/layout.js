@@ -1,4 +1,4 @@
-import AuthContext from '@/components/AuthProvider'
+import AuthContext from './components/AuthProvider'
 
 export default function RootLayout({ children }) {
   return (
